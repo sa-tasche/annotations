@@ -16,6 +16,7 @@ class ClassWithAtInDescriptionAndAnnotation
      * }
      *
      * @AnnotationTargetPropertyMethod("Bar")
+     * @var mixed
      */
     public $foo;
 
@@ -28,7 +29,8 @@ class ClassWithAtInDescriptionAndAnnotation
      *     "email3": "@example.com"
      * }
      *
-     *@AnnotationTargetPropertyMethod("Bar")
+     * @AnnotationTargetPropertyMethod("Bar")
+     * @var mixed
      */
     public $bar;
 }

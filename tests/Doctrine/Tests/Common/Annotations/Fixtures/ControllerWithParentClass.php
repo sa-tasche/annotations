@@ -2,8 +2,8 @@
 
 namespace Doctrine\Tests\Common\Annotations\Fixtures;
 
-use Doctrine\Tests\Common\Annotations\Fixtures\Annotation\Template;
 use Doctrine\Tests\Common\Annotations\Fixtures\Annotation\Route;
+use Doctrine\Tests\Common\Annotations\Fixtures\Annotation\Template;
 
 /**
  * @Route("/someprefix")
@@ -12,10 +12,12 @@ use Doctrine\Tests\Common\Annotations\Fixtures\Annotation\Route;
 class ControllerWithParentClass extends AbstractController
 {
     /**
+     * @return mixed[]
+     *
      * @Route("/", name="_demo")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(): array
     {
         return [];
     }

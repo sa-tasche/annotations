@@ -1,11 +1,13 @@
 <?php
+
 namespace Doctrine\Tests\Common\Annotations\Fixtures;
 
 use Doctrine\Tests\Common\Annotations\Fixtures\Annotation\Autoload;
 
-trait TraitWithAnnotatedMethod {
-
+trait TraitWithAnnotatedMethod
+{
     /**
+     * @var mixed
      * @Autoload
      */
     public $traitProperty;
@@ -13,7 +15,7 @@ trait TraitWithAnnotatedMethod {
     /**
      * @Autoload
      */
-    public function traitMethod()
+    public function traitMethod(): void
     {
     }
 }

@@ -9,12 +9,12 @@ use Doctrine\Tests\Common\Annotations\Fixtures\AnnotationTargetClass;
  */
 class ClassWithInvalidAnnotationTargetAtMethod
 {
-
     /**
+     * @param mixed $param
+     *
      * @AnnotationTargetClass("functionName")
      */
-    public function functionName($param)
+    public function functionName($param): void
     {
-
     }
 }

@@ -8,6 +8,7 @@ namespace Doctrine\Tests\Common\Annotations\Fixtures;
 class ClassWithIgnoreAnnotation
 {
     /**
+     * @var mixed[]
      * @IgnoreAnnotationClass
      */
     public $foo;

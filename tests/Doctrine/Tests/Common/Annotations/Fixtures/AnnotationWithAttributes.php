@@ -2,43 +2,58 @@
 
 namespace Doctrine\Tests\Common\Annotations\Fixtures;
 
+use Doctrine\Tests\Common\Annotations\Fixtures\AnnotationTargetAll;
+
 /**
  * @Annotation
  * @Target("ALL")
  * @Attributes({
-      @Attribute("mixed",                type = "mixed"),
-      @Attribute("boolean",              type = "boolean"),
-      @Attribute("bool",                 type = "bool"),
-      @Attribute("float",                type = "float"),
-      @Attribute("string",               type = "string"),
-      @Attribute("integer",              type = "integer"),
-      @Attribute("array",                type = "array"),
-      @Attribute("arrayOfIntegers",      type = "array<integer>"),
-      @Attribute("arrayOfStrings",       type = "string[]"),
-      @Attribute("annotation",           type = "Doctrine\Tests\Common\Annotations\Fixtures\AnnotationTargetAll"),
-      @Attribute("arrayOfAnnotations",   type = "array<Doctrine\Tests\Common\Annotations\Fixtures\AnnotationTargetAll>"),
+      @Attribute("mixed",              type = "mixed"),
+      @Attribute("boolean",            type = "boolean"),
+      @Attribute("bool",               type = "bool"),
+      @Attribute("float",              type = "float"),
+      @Attribute("string",             type = "string"),
+      @Attribute("integer",            type = "integer"),
+      @Attribute("array",              type = "array"),
+      @Attribute("arrayOfIntegers",    type = "array<integer>"),
+      @Attribute("arrayOfStrings",     type = "string[]"),
+      @Attribute("annotation",         type = "Doctrine\Tests\Common\Annotations\Fixtures\AnnotationTargetAll"),
+      @Attribute("arrayOfAnnotations", type = "array<Doctrine\Tests\Common\Annotations\Fixtures\AnnotationTargetAll>"),
   })
  */
 final class AnnotationWithAttributes
 {
-
-    public final function __construct(array $data)
+    /**
+     * @param mixed[] $data
+     */
+    public function __construct(array $data)
     {
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }
     }
 
+    /** @var mixed */
     private $mixed;
+    /** @var bool */
     private $boolean;
+    /** @var bool */
     private $bool;
+    /** @var float */
     private $float;
+    /** @var string */
     private $string;
+    /** @var integer */
     private $integer;
+    /** @var mixed[] */
     private $array;
+    /** @var object */
     private $annotation;
+    /** @var int[] */
     private $arrayOfIntegers;
+    /** @var string[] */
     private $arrayOfStrings;
+    /** @var object[] */
     private $arrayOfAnnotations;
 
     /**
@@ -81,13 +96,13 @@ final class AnnotationWithAttributes
         return $this->string;
     }
 
-    public function getInteger()
+    public function getInteger(): int
     {
         return $this->integer;
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getArray()
     {
@@ -95,7 +110,7 @@ final class AnnotationWithAttributes
     }
 
     /**
-     * @return \Doctrine\Tests\Common\Annotations\Fixtures\AnnotationTargetAll
+     * @return AnnotationTargetAll
      */
     public function getAnnotation()
     {
@@ -107,7 +122,7 @@ final class AnnotationWithAttributes
      */
     public function getArrayOfStrings()
     {
-        return $this->arrayOfIntegers;
+        return $this->arrayOfStrings;
     }
 
     /**
@@ -125,5 +140,4 @@ final class AnnotationWithAttributes
     {
         return $this->arrayOfAnnotations;
     }
-
 }

@@ -7,6 +7,7 @@ use Doctrine\Tests\Common\Annotations\Fixtures\AnnotationEnum;
 class ClassWithAnnotationEnum
 {
     /**
+     * @var mixed
      * @AnnotationEnum(AnnotationEnum::ONE)
      */
     public $foo;
@@ -14,10 +15,12 @@ class ClassWithAnnotationEnum
     /**
      * @AnnotationEnum("TWO")
      */
-    public function bar(){}
-
+    public function bar(): void
+    {
+    }
 
     /**
+     * @var mixed
      * @AnnotationEnum("FOUR")
      */
     public $invalidProperty;
@@ -25,5 +28,7 @@ class ClassWithAnnotationEnum
     /**
      * @AnnotationEnum(5)
      */
-    public function invalidMethod(){}
+    public function invalidMethod(): void
+    {
+    }
 }

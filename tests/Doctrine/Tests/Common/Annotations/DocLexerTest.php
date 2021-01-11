@@ -5,11 +5,13 @@ namespace Doctrine\Tests\Common\Annotations;
 use Doctrine\Common\Annotations\DocLexer;
 use PHPUnit\Framework\TestCase;
 
+use function str_repeat;
+
 class DocLexerTest extends TestCase
 {
-    public function testMarkerAnnotation() : void
+    public function testMarkerAnnotation(): void
     {
-        $lexer = new DocLexer;
+        $lexer = new DocLexer();
 
         $lexer->setInput('@Name');
         self::assertNull($lexer->token);
@@ -26,10 +28,16 @@ class DocLexerTest extends TestCase
         self::assertFalse($lexer->moveNext());
     }
 
-    public function testScannerTokenizesDocBlockWhitConstants() : void
+    public function testScannerTokenizesDocBlockWhitConstants(): void
     {
-        $lexer      = new DocLexer();
-        $docblock   = '@AnnotationWithConstants(PHP_EOL, ClassWithConstants::SOME_VALUE, ClassWithConstants::CONSTANT_, ClassWithConstants::CONST_ANT3, \Doctrine\Tests\Common\Annotations\Fixtures\InterfaceWithConstants::SOME_VALUE)';
+        $lexer    = new DocLexer();
+        $docblock = '@AnnotationWithConstants(
+            PHP_EOL,
+            ClassWithConstants::SOME_VALUE,
+            ClassWithConstants::CONSTANT_,
+            ClassWithConstants::CONST_ANT3,
+            \Doctrine\Tests\Common\Annotations\Fixtures\InterfaceWithConstants::SOME_VALUE
+        )';
 
         $tokens = [
             [
@@ -49,54 +57,54 @@ class DocLexerTest extends TestCase
             ],
             [
                 'value'     => 'PHP_EOL',
-                'position'  => 25,
+                'position'  => 38,
                 'type'      => DocLexer::T_IDENTIFIER,
             ],
             [
                 'value'     => ',',
-                'position'  => 32,
+                'position'  => 45,
                 'type'      => DocLexer::T_COMMA,
             ],
             [
                 'value'     => 'ClassWithConstants::SOME_VALUE',
-                'position'  => 34,
+                'position'  => 59,
                 'type'      => DocLexer::T_IDENTIFIER,
             ],
             [
                 'value'     => ',',
-                'position'  => 64,
+                'position'  => 89,
                 'type'      => DocLexer::T_COMMA,
             ],
             [
                 'value'     => 'ClassWithConstants::CONSTANT_',
-                'position'  => 66,
+                'position'  => 103,
                 'type'      => DocLexer::T_IDENTIFIER,
             ],
             [
                 'value'     => ',',
-                'position'  => 95,
+                'position'  => 132,
                 'type'      => DocLexer::T_COMMA,
             ],
             [
                 'value'     => 'ClassWithConstants::CONST_ANT3',
-                'position'  => 97,
+                'position'  => 146,
                 'type'      => DocLexer::T_IDENTIFIER,
             ],
             [
                 'value'     => ',',
-                'position'  => 127,
+                'position'  => 176,
                 'type'      => DocLexer::T_COMMA,
             ],
             [
                 'value'     => '\\Doctrine\\Tests\\Common\\Annotations\\Fixtures\\InterfaceWithConstants::SOME_VALUE',
-                'position'  => 129,
+                'position'  => 190,
                 'type'      => DocLexer::T_IDENTIFIER,
             ],
             [
                 'value'     => ')',
-                'position'  => 207,
+                'position'  => 277,
                 'type'      => DocLexer::T_CLOSE_PARENTHESIS,
-            ]
+            ],
         ];
 
         $lexer->setInput($docblock);
@@ -104,19 +112,18 @@ class DocLexerTest extends TestCase
         foreach ($tokens as $expected) {
             $lexer->moveNext();
             $lookahead = $lexer->lookahead;
-            self::assertEquals($expected['value'],     $lookahead['value']);
-            self::assertEquals($expected['type'],      $lookahead['type']);
-            self::assertEquals($expected['position'],  $lookahead['position']);
+            self::assertEquals($expected['value'], $lookahead['value']);
+            self::assertEquals($expected['type'], $lookahead['type']);
+            self::assertEquals($expected['position'], $lookahead['position']);
         }
 
         self::assertFalse($lexer->moveNext());
     }
 
-
-    public function testScannerTokenizesDocBlockWhitInvalidIdentifier() : void
+    public function testScannerTokenizesDocBlockWhitInvalidIdentifier(): void
     {
-        $lexer      = new DocLexer();
-        $docblock   = '@Foo\3.42';
+        $lexer    = new DocLexer();
+        $docblock = '@Foo\3.42';
 
         $tokens = [
             [
@@ -138,7 +145,7 @@ class DocLexerTest extends TestCase
                 'value'     => 3.42,
                 'position'  => 5,
                 'type'      => DocLexer::T_FLOAT,
-            ]
+            ],
         ];
 
         $lexer->setInput($docblock);
@@ -146,9 +153,9 @@ class DocLexerTest extends TestCase
         foreach ($tokens as $expected) {
             $lexer->moveNext();
             $lookahead = $lexer->lookahead;
-            self::assertEquals($expected['value'],     $lookahead['value']);
-            self::assertEquals($expected['type'],      $lookahead['type']);
-            self::assertEquals($expected['position'],  $lookahead['position']);
+            self::assertEquals($expected['value'], $lookahead['value']);
+            self::assertEquals($expected['type'], $lookahead['type']);
+            self::assertEquals($expected['position'], $lookahead['position']);
         }
 
         self::assertFalse($lexer->moveNext());
@@ -157,19 +164,19 @@ class DocLexerTest extends TestCase
     /**
      * @group 44
      */
-    public function testWithinDoubleQuotesVeryVeryLongStringWillNotOverflowPregSplitStackLimit() : void
+    public function testWithinDoubleQuotesVeryVeryLongStringWillNotOverflowPregSplitStackLimit(): void
     {
         $lexer = new DocLexer();
 
         $lexer->setInput('"' . str_repeat('.', 20240) . '"');
 
-        self::assertInternalType('array', $lexer->glimpse());
+        self::assertIsArray($lexer->glimpse());
     }
 
     /**
      * @group 44
      */
-    public function testRecognizesDoubleQuotesEscapeSequence() : void
+    public function testRecognizesDoubleQuotesEscapeSequence(): void
     {
         $lexer    = new DocLexer();
         $docblock = '@Foo("""' . "\n" . '""")';
@@ -207,15 +214,15 @@ class DocLexerTest extends TestCase
         foreach ($tokens as $expected) {
             $lexer->moveNext();
             $lookahead = $lexer->lookahead;
-            self::assertEquals($expected['value'],    $lookahead['value']);
-            self::assertEquals($expected['type'],     $lookahead['type']);
+            self::assertEquals($expected['value'], $lookahead['value']);
+            self::assertEquals($expected['type'], $lookahead['type']);
             self::assertEquals($expected['position'], $lookahead['position']);
         }
 
         self::assertFalse($lexer->moveNext());
     }
 
-    public function testDoesNotRecognizeFullAnnotationWithDashInIt() : void
+    public function testDoesNotRecognizeFullAnnotationWithDashInIt(): void
     {
         $this->expectDocblockTokens(
             '@foo-bar--',
@@ -254,7 +261,7 @@ class DocLexerTest extends TestCase
         );
     }
 
-    public function testRecognizesNegativeNumbers() : void
+    public function testRecognizesNegativeNumbers(): void
     {
         $this->expectDocblockTokens(
             '-12.34 -56',
@@ -268,14 +275,17 @@ class DocLexerTest extends TestCase
                     'value'     => '-56',
                     'position'  => 7,
                     'type'      => DocLexer::T_INTEGER,
-                ]
+                ],
             ]
         );
     }
 
-    private function expectDocblockTokens(string $docBlock, array $expectedTokens) : void
+    /**
+     * @phpstan-param list<array{value: mixed, position: int, type:int}> $expectedTokens
+     */
+    private function expectDocblockTokens(string $docBlock, array $expectedTokens): void
     {
-        $lexer    = new DocLexer();
+        $lexer = new DocLexer();
         $lexer->setInput($docBlock);
 
         $actualTokens = [];
@@ -293,9 +303,9 @@ class DocLexerTest extends TestCase
         self::assertEquals($expectedTokens, $actualTokens);
     }
 
-    public function testTokenAdjacency() : void
+    public function testTokenAdjacency(): void
     {
-        $lexer    = new DocLexer();
+        $lexer = new DocLexer();
 
         $lexer->setInput('-- -');
 

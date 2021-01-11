@@ -8,7 +8,6 @@ namespace Doctrine\Tests\Common\Annotations\Fixtures;
  */
 class ClassDDC1660
 {
-
     /**
      * @var     string
      * @since   2.0
@@ -17,14 +16,15 @@ class ClassDDC1660
     public $foo;
 
     /**
-     * @param   string
+     * @param   string $param
+     *
      * @return  string
+     *
      * @since   2.0
      * @version 1
      */
     public function bar($param)
     {
-        return null;
+        return $param;
     }
-
 }
